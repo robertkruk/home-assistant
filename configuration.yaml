@@ -1,0 +1,134 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name:                   Home
+  # Location required to calculate the time the sun rises and sets
+  latitude:               !secret latitude
+  longitude:              !secret longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation:              29
+  # metric for Metric, imperial for Imperial
+  unit_system:            metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone:              Australia/Brisbane
+  # Customization file
+  customize:              !include customize.yaml
+
+# Show links to resources in log and frontend
+introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password:         !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url:             example.duckdns.org:8123
+
+# Checks for available updates
+# Note:                   This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+# The sun component will use your current location to track if the sun is above or below the horizon
+sun:
+
+# Weather prediction
+sensor:
+  - platform:             bom
+    station:              IDQ60901.94578
+    name:                 Brisbane Airport
+    monitored_conditions:
+      - apparent_t
+      - cloud
+      # - cloud_base_m
+      # - cloud_oktas
+      # - cloud_type_id
+      - cloud_type
+      - delta_t
+      - gust_kmh
+      - gust_kt
+      - air_temp
+      - dewpt
+      - press
+      - press_qnh
+      - press_msl
+      # - press_tend
+      - rain_trace
+      - rel_hum
+      # - sea_state
+      # - swell_dir_worded
+      # - swell_height
+      # - swell_period
+      - vis_km
+      - weather
+      - wind_dir
+      - wind_spd_kmh
+      - wind_spd_kt
+
+# PVOutput
+# sensor:
+  - platform:             pvoutput
+    system_id:            !secret pvoutput_system_id
+    api_key:              !secret pvoutput_api_key
+    scan_interval:        120
+      # - platform:       template
+    # sensors:
+    #   power_consumption:
+    #     value_template: '{% if is_state_attr("sensor.pvoutput", "power_consumption", "NaN") %}0{% else %}{{ states.sensor.pvoutput.attributes.power_consumption }}{% endif %}'
+    #     friendly_name:  'Using'
+    #     unit_of_measurement: 'Watt'
+      # energy_consumption:
+      #   value_template: '{{ "%0.1f"|format(states.sensor.pvoutput.attributes.energy_consumption|float/1000) }}'
+      #   friendly_name:  'Used'
+      #   unit_of_measurement: 'kWh'
+      # power_generation:
+      #   value_template: '{% if is_state_attr("sensor.pvoutput", "power_generation", "NaN") %}0{% else %}{{ states.sensor.pvoutput.attributes.power_generation }}{% endif %}'
+      #   friendly_name:  'Generating'
+      #   unit_of_measurement: 'Watt'
+      # energy_generation:
+      #   value_template: '{% if is_state_attr("sensor.pvoutput", "energy_generation", "NaN") %}0{% else %}{{ "%0.2f"|format(states.sensor.pvoutput.attributes.energy_generation|float/1000) }}{% endif %}'
+      #   friendly_name:  'Generated'
+      #   unit_of_measurement: 'kWh'
+
+# Text to speech
+tts:
+  - platform:             google
+
+# Cloud
+cloud:
+
+group:                    !include groups.yaml
+automation:               !include automations.yaml
+script:                   !include scripts.yaml
+
+# Mi Config
+# 12 characters MAC can be obtained from the gateway.
+xiaomi_aqara:
+  gateways:
+    - host:               '192.168.1.10'
+      mac:                !secret mi_gateway_mac
+      key:                !secret mi_gateway_key
