@@ -1,4 +1,4 @@
 # home-assistant
 my home assistant config
 
-foo
+nothign to see here
